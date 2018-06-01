@@ -33,8 +33,14 @@
 
 
     //BTC variables
+
+    var urlBTCMonthly = "https://apiv2.bitcoinaverage.com/indices/global/history/BTCUSD?period=monthly&?format=json";
+    var ulrBTCAlltime = "https://apiv2.bitcoinaverage.com/indices/global/history/BTCUSD?period=alltime&?format=json";
+    var ulrBTCDaily = "https://apiv2.bitcoinaverage.com/indices/global/history/BTCUSD?period=dailye&?format=json";
+
     var trendGreen = [];
     var trendRed = [];
+    var trendSource = [];      // trend source
     var avg = [];
     var schowek = [];
     var x = 0;
@@ -44,13 +50,14 @@
     checkDate.setHours(checkDate.getHours() - 1);
     checkDate.setMinutes(0, 0, 0);
     var firstDate = new Date(checkDate);
+
     // ETH variables
+    var urlETHMonthly = "https://apiv2.bitcoinaverage.com/indices/global/history/ETHUSD?period=monthly&?format=json";
+    var ulrETHAlltime = "https://apiv2.bitcoinaverage.com/indices/global/history/ETHUSD?period=alltime&?format=json";
+    var ulrETHDaily = "https://apiv2.bitcoinaverage.com/indices/global/history/ETHUSD?period=dailye&?format=json";
+
     var avgE = [];
     var schowekE = [];
-    var trendSource = [];      // trend source
-    var trendGreen = [];  // trend green
-    var trendRed = [];  // trend red
-
     var xE = 0;
     var avgBackE = [];
     var checkDateE = new Date();
@@ -58,7 +65,12 @@
     checkDateE.setHours(checkDateE.getHours() - 1);
     checkDateE.setMinutes(0, 0, 0);
     var firstDateE = new Date(checkDateE);
+    var checkDateETHAllTime = new Date(2016,02,8); // same for LTC
     // LTC variables
+    var urlLTCMonthly = "https://apiv2.bitcoinaverage.com/indices/global/history/LTCUSD?period=monthly&?format=json";
+    var ulrLTCAlltime = "https://apiv2.bitcoinaverage.com/indices/global/history/LTCUSD?period=alltime&?format=json";
+    var ulrLTCDaily = "https://apiv2.bitcoinaverage.com/indices/global/history/LTCUSD?period=dailye&?format=json";
+  
     var avgL = [];
     var schowekL = [];
     var xL = 0;
@@ -69,28 +81,36 @@
     checkDateL.setHours(checkDateL.getHours() - 1);
     checkDateL.setMinutes(0, 0, 0);
     var firstDateL = new Date(checkDateL);
+	
+	var checkDateBTCAllTime = new Date(2010,06,17);
+
+
+
+
 
     // Chart
 	// each cryptocurrency value is shown on a different scale, so the chart looks nicer
     window.onload = function () {
       var chart;
-      loadJSON("https://apiv2.bitcoinaverage.com/indices/global/history/BTCUSD?period=monthly&?format=json", function (data) {
-        
+      loadJSON(ulrBTCAlltime, function (data) {
+       
 		console.log("BTC data loaded");  // we could say it is a unit test function
 		// if this console log does not show, we know that here problem occurs
 		// Load BTC data, then :
+        
         for (var i = 0; i < data.length - 1; i++) {
-          x++;
-          var newDate = new Date(firstDate);
-          newDate.setHours(newDate.getHours() + x);
+         
+          var newDate = new Date(checkDateBTCAllTime);
+          newDate.setDate(newDate.getDate() + x);
           schowek.push(x);
           avg.push({
             x: newDate,
             y: data[i].average
           })
+          x++;
         }
-
-        for (var p = 0; p < schowek.length - 1; p++) {
+      
+      for (var p = 0; p < schowek.length - 1; p++) {
           avgBack.push({
             x: avg[p].x,
             y: avg[(schowek.length - 1) - p].y
@@ -107,105 +127,69 @@
             x: avg[p].x,
             y: null
           });
+          avgBackE.push({
+            x: avg[p].x,
+            y: null
+          });
+          avgBackL.push({
+            x: avg[p].x,
+            y: null
+          });
         }
-        for (var l = 0; l < schowek.length - 1; l = l + 168) {
-          trendSource[l].y = avgBack[l].y;
-          trendGreen[l].y = avgBack[l].y;
-          trendRed[l].y = avgBack[l].y;
-        }
-        trendSource[836].y = avgBack[836].y;
-        trendGreen[836].y = avgBack[836].y;
-        trendRed[836].y = avgBack[836].y;
+      
+       
 
-        // TRENDS
-
-        for (var i = 0; i < 168; i++) {
-
-          if (trendSource[168].y <= trendSource[0].y) {
-            trendRed[i + 1].y = trendRed[i].y + ((trendSource[168].y - trendSource[0].y) / 168);
-          } else {
-            trendGreen[i + 1].y = trendGreen[i].y + ((trendSource[168].y - trendSource[0].y) / 168);
-          }
-        }
-        for (var i = 168; i < 336; i++) {
-
-          if (trendSource[336].y <= trendSource[168].y) {
-            trendRed[i + 1].y = trendRed[i].y + ((trendSource[336].y - trendSource[168].y) / 168);
-          } else {
-            trendGreen[i + 1].y = trendGreen[i].y + ((trendSource[336].y - trendSource[168].y) / 168);
-          }
-        }
-        for (var i = 336; i < 504; i++) {
-
-          if (trendSource[504].y <= trendSource[336].y) {
-            trendRed[i + 1].y = trendRed[i].y + ((trendSource[504].y - trendSource[336].y) / 168);
-          } else {
-            trendGreen[i + 1].y = trendGreen[i].y + ((trendSource[504].y - trendSource[336].y) / 168);
-          }
-        }
-        for (var i = 504; i < 672; i++) {
-
-          if (trendSource[672].y <= trendSource[504].y) {
-            trendRed[i + 1].y = trendRed[i].y + ((trendSource[672].y - trendSource[504].y) / 168);
-          } else {
-            trendGreen[i + 1].y = trendGreen[i].y + ((trendSource[672].y - trendSource[504].y) / 168);
-          }
-        }
-        for (var i = 672; i < 836; i++) {
-          if (trendSource[836].y < trendSource[672].y) {
-            trendRed[i + 1].y = trendRed[i].y + ((trendSource[836].y - trendSource[672].y) / 164);
-          } else {
-            trendGreen[i + 1].y = trendGreen[i].y + ((trendSource[836].y - trendSource[672].y) / 164);
-          }
-        }
-
-        // end trends 
-
-        loadJSON('https://apiv2.bitcoinaverage.com/indices/global/history/ETHUSD?period=monthly&?format=json', function (res) {
+        loadJSON(ulrETHAlltime, function (res) {
 			console.log("ETH data loaded");  // we could say it is a unit test function
 			// if this console log does not show, we know that here problem occurs
           // load ETH data, then:
+          
           for (var i = 0; i < res.length - 1; i++) {
-            xE++;
-            var newDateE = new Date(firstDateE);
-            newDateE.setHours(newDateE.getHours() + xE);
+           
+            var newDateE = new Date(checkDateETHAllTime);
+            newDateE.setDate(newDateE.getDate() + xE);
             schowekE.push(xE);
             avgE.push({
               x: newDateE,
               y: res[i].average
             })
+            xE++;
           }
-          for (var pE = 0; pE < schowekE.length - 1; pE++) {
-            avgBackE.push({
-              x: avgE[pE].x,
-              y: avgE[(schowekE.length - 1) - pE].y
-            })
-          }
+          var q=0;
+      
+            for (var pE = avgBackE.length-res.length; pE < avgBackE.length - 1; pE++) {
+              avgBackE[pE].y= avgE[(schowekE.length - 1)-q].y;
+              q++;
+              
+            }
+          
 
-          loadJSON('https://apiv2.bitcoinaverage.com/indices/global/history/LTCUSD?period=monthly&?format=json', function (resp) {
+          loadJSON(ulrLTCAlltime, function (resp) {
 			console.log("LTC data loaded");  // we could say it is a unit test function
 			// if this console log does not show, we know that here problem occurs
             // load LTC data, then :
 
             for (var i = 0; i < resp.length - 1; i++) {
 
-              xL++;
-              var newDateL = new Date(firstDateL);
-              newDateL.setHours(newDateL.getHours() + xL);
+             
+              var newDateL = new Date(checkDateETHAllTime);
+              newDateL.setDate(newDateL.getDate() + xL);
               schowekL.push(xL);
               avgL.push({
                 x: newDateL,
                 y: resp[i].average
               })
+              xL++;
             }
 
-
-            for (var pL = 0; pL < schowekL.length - 1; pL++) {
-              avgBackL.push({
-                x: avgL[pL].x,
-                y: avgL[(schowekL.length - 1) - pL].y
-              })
+            var qLTC=0;
+           
+            for (var pL = avgBackL.length-resp.length; pL < avgBackL.length - 1; pL++) {
+              avgBackL[pL].y= avgL[(schowekL.length-1)-qLTC].y;
+              qLTC++;
+     
             }
+            console.log(avgBackE);
 
             // once all the data has been loaded and properly converted, create a chart
 
@@ -229,7 +213,7 @@
               backgroundColor: "#FAFAFD",
 
               title: {
-                text: "Cryptocurrencies Values",
+                text: "Cryptocurrencies Values - Alltime Data",
                 fontSize: 20,
                 fontColor: "#4C4CA6",
 
@@ -243,8 +227,7 @@
                   includeZero: false,
                   suffix: " USD",
                   labelFontSize: 15,
-                  viewportMaximum: 10000,
-                  viewportMinimum: 5500,
+             
                 },
 
                 {
@@ -255,8 +238,7 @@
                   includeZero: false,
                   suffix: " USD",
                   labelFontSize: 15,
-                  viewportMinimum: 400,
-                  viewportMaximum: 1100,
+                  
                 },
                 {
                   title: "LTC Value",
@@ -266,8 +248,7 @@
                   includeZero: false,
                   suffix: " USD",
                   labelFontSize: 15,
-                  viewportMinimum: 110,
-                  viewportMaximum: 250,
+                  
                 }
               ],
               data: [{
@@ -279,51 +260,36 @@
                 color: "black",
                 dataPoints: avgBack
               },
-              {
+             {
 
-                name: "ETHUSD",
-                type: "line",
-                axisYIndex: 1,
-                color: "blue",
-                showInLegend: true,
-                dataPoints: avgBackE
-              },
-              {
+               name: "ETHUSD",
+               type: "line",
+               axisYIndex: 1,
+               color: "blue",
+               showInLegend: true,
+               dataPoints: avgBackE
+             },
+             {
 
-                name: "LTCUSD",
-                type: "line",
-                axisYIndex: 2,
-                color: "purple",
-                showInLegend: true,
-                dataPoints: avgBackL
-              },
-              {
-
-                name: "Weekly BTC value growth",
-                axisYIndex: 0,
-                showInLegend: true,
-                type: "line",
-                color: "green",
-                dataPoints: trendGreen
-              },
-              {
-
-                name: "Weekly BTC value drop",
-                axisYIndex: 0,
-                showInLegend: true,
-                type: "line",
-                color: "red",
-                dataPoints: trendRed
-              }
+               name: "LTCUSD",
+               type: "line",
+               axisYIndex: 2,
+               color: "purple",
+               showInLegend: true,
+               dataPoints: avgBackL
+             },
+        
+         
               ],
             });
             chart.render();
+			console.log(chart);
             function updateChart() {
               setTimeout(function () {
                 chart.render();
                 updateChart();
-                console.log("update");
-              }, 2000);
+                
+              }, 1000);
             }
             updateChart(); // update chart every 2 sec
           }, 'jsonp'); // end ltc loadJSON
@@ -342,13 +308,26 @@
   <br>
 
   <img src="https://www.kainos.pl/wp-content/uploads/2016/09/kainos-logo-sticky.png?718ea0" alt="" style="display : block; margin : auto;">
-  <app-root></app-root>
+ <hr>
+ <div style="text-align:center">
+ <button class="btn btn-primary" id="onMonthly" style="margin-left:auto;
+ margin-right:auto;">Monthly Data</button>
+ <button class="btn btn-primary" id="onAlltime" style="margin-left:auto;
+ margin-right:auto;">Alltime Data</button>
+ <button class="btn btn-primary" id="onDaily" style="margin-left:auto;
+ margin-right:auto;">Daily Data</button>
+ <br>
+ <i style="font-size: 13px; color : grey;">(Details and trendlines can be displayed after selecting "Monthly Data" chart)</i>
+</div>
+<br>
   <div id="chartContainer" style="height: 600px; width: 1140px; margin : auto; border-style: outset; border-color: rgba(121,151,161, 0.6);"></div>
+  <div id="chartContainer2" style="height: 600px; width: 1140px; margin : auto; border-style: outset; border-color: rgba(121,151,161, 0.6); display : none;"></div>
+  <div id="chartContainer3" style="height: 600px; width: 1140px; margin : auto; border-style: outset; border-color: rgba(121,151,161, 0.6); display : none;"></div>
   <div style="text-align:center">
-    <button class="btn btn-primary" id="getText" style="margin-left:auto;
-    margin-right:auto;">Show Details</button>
+    <button class="btn btn-success" id="getText" style="margin-left:auto;
+    margin-right:auto; display: none;">Show Details</button>
     <button class="btn btn-danger" id="hideText" style="margin-left:auto;
-    margin-right:auto;">Hide Details</button>
+    margin-right:auto; display : none;">Hide Details</button>
   </div>
   <form id="hideDiv" style="text-align:center">
 
@@ -400,6 +379,9 @@
   <script>
     document.getElementById('getText').addEventListener('click', getText);
     document.getElementById('hideText').addEventListener('click', hideText);
+    document.getElementById('onMonthly').addEventListener('click', monthlyRequest);
+    document.getElementById('onAlltime').addEventListener('click', alltimeRequest);
+    document.getElementById('onDaily').addEventListener('click', dailyRequest);
     greenHour.style.display = "none";
     greenDay.style.display = "none";
     greenWeek.style.display = "none";
@@ -422,16 +404,14 @@
       greenHour.style.display = "none";
       greenDay.style.display = "none";
       greenWeek.style.display = "none";
-      if (i === 1) {
+      
         var x = document.getElementById("hideDiv");
-
-        if (x.style.display === "none") {
+        
+        
           x.style.display = "block";
-        } else {
-          x.style.display = "none";
-        }
-        i = 0;
-      }
+        
+        
+      
 
       var btc1 = avgBack[avgBack.length - 1].y;
       var btc2 = avgBack[avgBack.length - 2].y;
@@ -576,14 +556,563 @@
       } else {
         x.style.display = "none";
       }
-      i = 1;
+      
     }
-// There are
+
+
+
+
+
+// load monthly data
+function monthlyRequest(){
+  loadJSON(urlBTCMonthly, function (data) {
+        // Load BTC data, then :
+        console.log('monthly');
+        trendGreen = [];
+        trendRed = [];
+        avg = [];
+        schowek = [];
+        x = 0;
+        avgBack = [];
+        checkDate = new Date();
+        checkDate.setDate(checkDate.getDate() - 35);
+        checkDate.setHours(checkDate.getHours() - 1);
+        checkDate.setMinutes(0, 0, 0);
+        firstDate = new Date(checkDate);
+        for (var i = 0; i < data.length - 1; i++) {
+          
+          newDate = new Date(firstDate);
+          newDate.setHours(newDate.getHours() + x);
+          schowek.push(x);
+          avg.push({
+            x: newDate,
+            y: data[i].average
+          })
+          x++;
+        }
+
+        for (var p = 0; p < schowek.length - 1; p++) {
+          avgBack.push({
+            x: avg[p].x,
+            y: avg[(schowek.length - 1) - p].y
+          });
+          trendSource.push({
+            x: avg[p].x,
+            y: null
+          });
+          trendGreen.push({
+            x: avg[p].x,
+            y: null
+          });
+          trendRed.push({
+            x: avg[p].x,
+            y: null
+          });
+        }
+        for (var l = 0; l < schowek.length - 1; l = l + 168) {
+          trendSource[l].y = avgBack[l].y;
+          trendGreen[l].y = avgBack[l].y;
+          trendRed[l].y = avgBack[l].y;
+        }
+        trendSource[836].y = avgBack[836].y;
+        trendGreen[836].y = avgBack[836].y;
+        trendRed[836].y = avgBack[836].y;
+
+        // TRENDS
+
+        for (var i = 0; i < 168; i++) {
+
+          if (trendSource[168].y <= trendSource[0].y) {
+            trendRed[i + 1].y = trendRed[i].y + ((trendSource[168].y - trendSource[0].y) / 168);
+          } else {
+            trendGreen[i + 1].y = trendGreen[i].y + ((trendSource[168].y - trendSource[0].y) / 168);
+          }
+        }
+        for (var i = 168; i < 336; i++) {
+
+          if (trendSource[336].y <= trendSource[168].y) {
+            trendRed[i + 1].y = trendRed[i].y + ((trendSource[336].y - trendSource[168].y) / 168);
+          } else {
+            trendGreen[i + 1].y = trendGreen[i].y + ((trendSource[336].y - trendSource[168].y) / 168);
+          }
+        }
+        for (var i = 336; i < 504; i++) {
+
+          if (trendSource[504].y <= trendSource[336].y) {
+            trendRed[i + 1].y = trendRed[i].y + ((trendSource[504].y - trendSource[336].y) / 168);
+          } else {
+            trendGreen[i + 1].y = trendGreen[i].y + ((trendSource[504].y - trendSource[336].y) / 168);
+          }
+        }
+        for (var i = 504; i < 672; i++) {
+
+          if (trendSource[672].y <= trendSource[504].y) {
+            trendRed[i + 1].y = trendRed[i].y + ((trendSource[672].y - trendSource[504].y) / 168);
+          } else {
+            trendGreen[i + 1].y = trendGreen[i].y + ((trendSource[672].y - trendSource[504].y) / 168);
+          }
+        }
+        for (var i = 672; i < 836; i++) {
+          if (trendSource[836].y < trendSource[672].y) {
+            trendRed[i + 1].y = trendRed[i].y + ((trendSource[836].y - trendSource[672].y) / 164);
+          } else {
+            trendGreen[i + 1].y = trendGreen[i].y + ((trendSource[836].y - trendSource[672].y) / 164);
+          }
+        }
+
+        // end trends 
+
+        loadJSON(urlETHMonthly, function (res) {
+          avgE = [];
+    schowekE = [];
+    xE = 0;
+    avgBackE = [];
+    checkDateE = new Date();
+    checkDateE.setDate(checkDateE.getDate() - 35);
+    checkDateE.setHours(checkDateE.getHours() - 1);
+    checkDateE.setMinutes(0, 0, 0);
+    firstDateE = new Date(checkDateE);
+
+          // load ETH data, then:
+          for (var i = 0; i < res.length - 1; i++) {
+           
+            newDateE = new Date(firstDateE);
+            newDateE.setHours(newDateE.getHours() + xE);
+            schowekE.push(xE);
+            avgE.push({
+              x: newDateE,
+              y: res[i].average
+            })
+            xE++;
+          }
+          for (var pE = 0; pE < schowekE.length - 1; pE++) {
+            avgBackE.push({
+              x: avgE[pE].x,
+              y: avgE[(schowekE.length - 1) - pE].y
+            })
+          }
+
+
+
+
+          loadJSON(urlLTCMonthly, function (resp) {
+
+            // load LTC data, then :
+            avgL = [];
+    schowekL = [];
+    xL = 0;
+    avgBackL = [];
+    checkDateL = new Date();
+    checkDateL.setDate(checkDateL.getDate() - 35);
+
+    checkDateL.setHours(checkDateL.getHours() - 1);
+    checkDateL.setMinutes(0, 0, 0);
+    firstDateL = new Date(checkDateL);
+
+            for (var i = 0; i < resp.length - 1; i++) {
+
+             
+              newDateL = new Date(firstDateL);
+              newDateL.setHours(newDateL.getHours() + xL);
+              schowekL.push(xL);
+              avgL.push({
+                x: newDateL,
+                y: resp[i].average
+              })
+              xL++;
+            }
+
+
+            for (var pL = 0; pL < schowekL.length - 1; pL++) {
+              avgBackL.push({
+                x: avgL[pL].x,
+                y: avgL[(schowekL.length - 1) - pL].y
+              })
+            }
+
+            var chart2;
+            chart2 = new CanvasJS.Chart("chartContainer2", {
+
+zoomEnabled: true,
+
+legend: {
+  cursor: "pointer",
+  itemclick: function (e) {
+    if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+      e.dataSeries.visible = false;
+    } else {
+      e.dataSeries.visible = true;
+    }
+
+    e.chart.render();
+  }
+},
+
+backgroundColor: "#FAFAFD",
+
+title: {
+  text: "Cryptocurrencies Values - Monthly Data",
+  fontSize: 20,
+  fontColor: "#4C4CA6",
+
+},
+axisY: [
+  {
+    title: "BTC Value",
+
+    titleFontSize: 20,
+    logarithmic: true,
+    includeZero: false,
+    suffix: " USD",
+    labelFontSize: 15,
+   viewportMaximum: 10000,
+     viewportMinimum: 5500,
+  },
+
+  {
+    title: "ETH Value",
+    titleFontColor: "blue",
+    titleFontSize: 20,
+    logarithmic: true,
+    includeZero: false,
+    suffix: " USD",
+    labelFontSize: 15,
+    viewportMinimum: 400,
+    viewportMaximum: 1100,
+  },
+  {
+    title: "LTC Value",
+    titleFontSize: 20,
+    titleFontColor: "purple",
+    logarithmic: true,
+    includeZero: false,
+    suffix: " USD",
+    labelFontSize: 15,
+    viewportMinimum: 110,
+    viewportMaximum: 250,
+  }
+],
+data: [{
+
+  name: "BTCUSD",
+  axisYIndex: 0,
+  showInLegend: true,
+  type: "line",
+  color: "black",
+  dataPoints: avgBack
+},
+{
+
+ name: "ETHUSD",
+ type: "line",
+ axisYIndex: 1,
+ color: "blue",
+ showInLegend: true,
+ dataPoints: avgBackE
+},
+{
+
+ name: "LTCUSD",
+ type: "line",
+ axisYIndex: 2,
+ color: "purple",
+ showInLegend: true,
+ dataPoints: avgBackL
+},
+{
+
+ name: "Weekly BTC value growth",
+ axisYIndex: 0,
+ showInLegend: true,
+ type: "line",
+ color: "green",
+ dataPoints: trendGreen
+},
+{
+
+ name: "Weekly BTC value drop",
+ axisYIndex: 0,
+ showInLegend: true,
+ type: "line",
+ color: "red",
+ dataPoints: trendRed
+}
+],
+});
+chart2.render();
+
+function updateChart2() {
+setTimeout(function () {
+  chart2.render();
+  updateChart2();
+  
+}, 1000);
+}
+updateChart2(); // update chart every 2 sec
+var chartContainer2 = document.getElementById('chartContainer2');
+chartContainer2.style.display = "block";
+var chartContainer1 = document.getElementById('chartContainer');
+chartContainer1.style.display = "none";
+var button1 = document.getElementById('getText');
+button1.style.display = "inline-block";
+var button2 = document.getElementById('hideText');
+button2.style.display = "inline-block";
+var chartContainer3 = document.getElementById('chartContainer3');
+chartContainer3.style.display = "none";
+
+}, 'jsonp');
+}, 'jsonp');
+}, 'jsonp');
+}
+
+//allTime request
+
+function alltimeRequest(){
+
+var chartContainer2 = document.getElementById('chartContainer2');
+chartContainer2.style.display = "none";
+var chartContainer1 = document.getElementById('chartContainer');
+chartContainer1.style.display = "block";
+var button1 = document.getElementById('getText');
+button1.style.display = "none";
+var button2 = document.getElementById('hideText');
+button2.style.display = "none";
+var chartContainer3 = document.getElementById('chartContainer3');
+chartContainer3.style.display = "none";
+
+var xy = document.getElementById("hideDiv");
+xy.style.display = "none";
+}
+
+// daily request
+
+  function dailyRequest() {
+
+    var chart3;
+    loadJSON("https://apiv2.bitcoinaverage.com/indices/global/history/BTCUSD?period=daily&?format=json", function (data) {
+
+      // Load BTC data, then :
+      avg = [];
+      schowek = [];
+      x = 0;
+      avgBack = [];
+      var dayDate = new Date();
+      dayDate.setDate(dayDate.getDate() - 1);
+      dayDate.setHours(dayDate.getHours() - 6);
+      dayDate.setSeconds(0, 0);
+
+
+
+      for (var i = 0; i < data.length - 1; i++) {
+
+        var newDate = new Date(dayDate);
+        newDate.setMinutes(newDate.getMinutes() + x);
+        schowek.push(x);
+        avg.push({
+          x: newDate,
+          y: data[i].average
+        })
+        x++;
+      }
+
+      for (var p = 0; p < schowek.length - 1; p++) {
+        avgBack.push({
+          x: avg[p].x,
+          y: avg[(schowek.length - 1) - p].y
+        });
+      }
+
+
+
+      loadJSON('https://apiv2.bitcoinaverage.com/indices/global/history/ETHUSD?period=daily&?format=json', function (res) {
+
+        // load ETH data, then:
+
+        avgE = [];
+        schowekE = [];
+        xE = 0;
+        avgBackE = [];
+
+
+
+
+        for (var i = 0; i < res.length - 1; i++) {
+
+          var newDateE = new Date(dayDate);
+          newDateE.setMinutes(newDateE.getMinutes() + xE);
+          schowekE.push(xE);
+          avgE.push({
+            x: newDateE,
+            y: res[i].average
+          })
+          xE++;
+        }
+        for (var pE = 0; pE < schowekE.length - 1; pE++) {
+          avgBackE.push({
+            x: avgE[pE].x,
+            y: avgE[(schowekE.length - 1) - pE].y
+          })
+        }
+
+        loadJSON('https://apiv2.bitcoinaverage.com/indices/global/history/LTCUSD?period=daily&?format=json', function (resp) {
+
+          // load LTC data, then :
+
+          avgL = [];
+          schowekL = [];
+          xL = 0;
+          avgBackL = [];
+
+
+          for (var i = 0; i < resp.length - 1; i++) {
+
+
+            var newDateL = new Date(dayDate);
+            newDateL.setMinutes(newDateL.getMinutes() + xL);
+            schowekL.push(xL);
+            avgL.push({
+              x: newDateL,
+              y: resp[i].average
+            })
+            xL++;
+          }
+
+
+          for (var pL = 0; pL < schowekL.length - 1; pL++) {
+            avgBackL.push({
+              x: avgL[pL].x,
+              y: avgL[(schowekL.length - 1) - pL].y
+            })
+          }
+
+          // once all the data has been loaded and properly converted, create a chart
+
+          chart3 = new CanvasJS.Chart("chartContainer3", {
+
+            zoomEnabled: true,
+
+            legend: {
+              cursor: "pointer",
+              itemclick: function (e) {
+                if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                  e.dataSeries.visible = false;
+                } else {
+                  e.dataSeries.visible = true;
+                }
+
+                e.chart3.render();
+              }
+            },
+
+            backgroundColor: "#FAFAFD",
+
+            title: {
+              text: "Cryptocurrencies Values - Daily Data",
+              fontSize: 20,
+              fontColor: "#4C4CA6",
+
+            },
+            axisY: [
+              {
+                title: "BTC Value",
+
+                titleFontSize: 20,
+                logarithmic: true,
+                includeZero: false,
+                suffix: " USD",
+                labelFontSize: 15,
+                viewportMaximum: 10000,
+                viewportMinimum: 5500,
+              },
+
+              {
+                title: "ETH Value",
+                titleFontColor: "blue",
+                titleFontSize: 20,
+                logarithmic: true,
+                includeZero: false,
+                suffix: " USD",
+                labelFontSize: 15,
+                viewportMinimum: 400,
+                viewportMaximum: 1100,
+              },
+              {
+                title: "LTC Value",
+                titleFontSize: 20,
+                titleFontColor: "purple",
+                logarithmic: true,
+                includeZero: false,
+                suffix: " USD",
+                labelFontSize: 15,
+                viewportMinimum: 110,
+                viewportMaximum: 250,
+              }
+            ],
+            data: [{
+
+              name: "BTCUSD",
+              axisYIndex: 0,
+              showInLegend: true,
+              type: "line",
+              color: "black",
+              dataPoints: avgBack
+            },
+            {
+
+              name: "ETHUSD",
+              type: "line",
+              axisYIndex: 1,
+              color: "blue",
+              showInLegend: true,
+              dataPoints: avgBackE
+            },
+            {
+
+              name: "LTCUSD",
+              type: "line",
+              axisYIndex: 2,
+              color: "purple",
+              showInLegend: true,
+              dataPoints: avgBackL
+            },
+
+
+            ],
+          });
+          chart3.render();
+          function updateChart3() {
+            setTimeout(function () {
+              chart3.render();
+              updateChart3();
+             
+
+
+
+            }, 1000);
+          }
+          updateChart3(); // update chart every 2 sec
+        }, 'jsonp'); // end ltc loadJSON
+      }, 'jsonp'); // end eth loadJSON
+    }, 'jsonp'); // end btc loadJSON
+
+    var chartContainer3 = document.getElementById('chartContainer3');
+    chartContainer3.style.display = "block";
+    var chartContainer2 = document.getElementById('chartContainer2');
+    chartContainer2.style.display = "none";
+    var chartContainer1 = document.getElementById('chartContainer');
+    chartContainer1.style.display = "none";
+    var button1 = document.getElementById('getText');
+    button1.style.display = "none";
+    var button2 = document.getElementById('hideText');
+    button2.style.display = "none";
+    
+    var xyz = document.getElementById("hideDiv");
+xyz.style.display = "none";
+
+  }
+
   </script>
-  <footer style="background: rgba(200, 200, 200, 0.6);
-	text-align: center;
-	margin: auto;
-	padding: 0 15px;"></footer>
+
 </body>
 
 </html>
