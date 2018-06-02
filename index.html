@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>CoinTrends Challenge 2018</title>
+  <title>Chart</title>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -565,6 +565,14 @@
 
 // load monthly data
 function monthlyRequest(){
+// hide elements
+  var chartContainer1 = document.getElementById('chartContainer');
+  chartContainer1.style.display = "none";
+
+  var chartContainer3 = document.getElementById('chartContainer3');
+  chartContainer3.style.display = "none";
+
+
   loadJSON(urlBTCMonthly, function (data) {
         // Load BTC data, then :
         
@@ -696,6 +704,10 @@ function monthlyRequest(){
 
 
           loadJSON(urlLTCMonthly, function (resp) {
+
+
+
+
 		  
 		  console.log('Monthly data loaded');
 
@@ -851,20 +863,20 @@ setTimeout(function () {
 }, 1000);
 }
 updateChart2(); // update chart every 2 sec
-var chartContainer2 = document.getElementById('chartContainer2');
-chartContainer2.style.display = "block";
-var chartContainer1 = document.getElementById('chartContainer');
-chartContainer1.style.display = "none";
-var button1 = document.getElementById('getText');
-button1.style.display = "inline-block";
-var button2 = document.getElementById('hideText');
-button2.style.display = "inline-block";
-var chartContainer3 = document.getElementById('chartContainer3');
-chartContainer3.style.display = "none";
+
+
 
 }, 'jsonp');
 }, 'jsonp');
 }, 'jsonp');
+
+// show chart and elements
+var chartContainer2 = document.getElementById('chartContainer2');
+chartContainer2.style.display = "block";
+var button1 = document.getElementById('getText');
+button1.style.display = "inline-block";
+var button2 = document.getElementById('hideText');
+button2.style.display = "inline-block";
 }
 
 //allTime request
@@ -873,10 +885,10 @@ function alltimeRequest(){
 
 console.log('Alltime data loaded');
 
+
+// hide elements
 var chartContainer2 = document.getElementById('chartContainer2');
 chartContainer2.style.display = "none";
-var chartContainer1 = document.getElementById('chartContainer');
-chartContainer1.style.display = "block";
 var button1 = document.getElementById('getText');
 button1.style.display = "none";
 var button2 = document.getElementById('hideText');
@@ -886,12 +898,27 @@ chartContainer3.style.display = "none";
 
 var xy = document.getElementById("hideDiv");
 xy.style.display = "none";
+
+//show chart
+var chartContainer1 = document.getElementById('chartContainer');
+chartContainer1.style.display = "block";
 }
 
 // daily request
 
   function dailyRequest() {
-  
+
+    // hide elements  
+    var chartContainer2 = document.getElementById('chartContainer2');
+    chartContainer2.style.display = "none";
+    var chartContainer1 = document.getElementById('chartContainer');
+    chartContainer1.style.display = "none";
+    var button1 = document.getElementById('getText');
+    button1.style.display = "none";
+    var button2 = document.getElementById('hideText');
+    button2.style.display = "none";
+    var xyz = document.getElementById("hideDiv");
+    xyz.style.display = "none";
   
 
     var chart3;
@@ -1099,19 +1126,11 @@ xy.style.display = "none";
       }, 'jsonp'); // end eth loadJSON
     }, 'jsonp'); // end btc loadJSON
 
+
+    // show chart
     var chartContainer3 = document.getElementById('chartContainer3');
     chartContainer3.style.display = "block";
-    var chartContainer2 = document.getElementById('chartContainer2');
-    chartContainer2.style.display = "none";
-    var chartContainer1 = document.getElementById('chartContainer');
-    chartContainer1.style.display = "none";
-    var button1 = document.getElementById('getText');
-    button1.style.display = "none";
-    var button2 = document.getElementById('hideText');
-    button2.style.display = "none";
     
-    var xyz = document.getElementById("hideDiv");
-xyz.style.display = "none";
 
   }
   </script>
