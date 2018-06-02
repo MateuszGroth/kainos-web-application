@@ -189,7 +189,7 @@
               qLTC++;
      
             }
-            console.log(avgBackE);
+            
 
             // once all the data has been loaded and properly converted, create a chart
 
@@ -283,7 +283,7 @@
               ],
             });
             chart.render();
-			console.log(chart);
+			
             function updateChart() {
               setTimeout(function () {
                 chart.render();
@@ -310,10 +310,10 @@
   <img src="https://www.kainos.pl/wp-content/uploads/2016/09/kainos-logo-sticky.png?718ea0" alt="" style="display : block; margin : auto;">
  <hr>
  <div style="text-align:center">
- <button class="btn btn-primary" id="onMonthly" style="margin-left:auto;
- margin-right:auto;">Monthly Data</button>
  <button class="btn btn-primary" id="onAlltime" style="margin-left:auto;
  margin-right:auto;">Alltime Data</button>
+ <button class="btn btn-primary" id="onMonthly" style="margin-left:auto;
+ margin-right:auto;">Monthly Data</button>
  <button class="btn btn-primary" id="onDaily" style="margin-left:auto;
  margin-right:auto;">Daily Data</button>
  <br>
@@ -567,7 +567,7 @@
 function monthlyRequest(){
   loadJSON(urlBTCMonthly, function (data) {
         // Load BTC data, then :
-        console.log('monthly');
+        
         trendGreen = [];
         trendRed = [];
         avg = [];
@@ -696,6 +696,8 @@ function monthlyRequest(){
 
 
           loadJSON(urlLTCMonthly, function (resp) {
+		  
+		  console.log('Monthly data loaded');
 
             // load LTC data, then :
             avgL = [];
@@ -869,6 +871,8 @@ chartContainer3.style.display = "none";
 
 function alltimeRequest(){
 
+console.log('Alltime data loaded');
+
 var chartContainer2 = document.getElementById('chartContainer2');
 chartContainer2.style.display = "none";
 var chartContainer1 = document.getElementById('chartContainer');
@@ -887,6 +891,8 @@ xy.style.display = "none";
 // daily request
 
   function dailyRequest() {
+  
+  
 
     var chart3;
     loadJSON("https://apiv2.bitcoinaverage.com/indices/global/history/BTCUSD?period=daily&?format=json", function (data) {
@@ -955,6 +961,8 @@ xy.style.display = "none";
         }
 
         loadJSON('https://apiv2.bitcoinaverage.com/indices/global/history/LTCUSD?period=daily&?format=json', function (resp) {
+		
+		console.log('Daily data loaded');
 
           // load LTC data, then :
 
@@ -1075,8 +1083,7 @@ xy.style.display = "none";
               showInLegend: true,
               dataPoints: avgBackL
             },
-
-
+			
             ],
           });
           chart3.render();
@@ -1084,10 +1091,7 @@ xy.style.display = "none";
             setTimeout(function () {
               chart3.render();
               updateChart3();
-             
-
-
-
+ 
             }, 1000);
           }
           updateChart3(); // update chart every 2 sec
@@ -1110,9 +1114,6 @@ xy.style.display = "none";
 xyz.style.display = "none";
 
   }
-
   </script>
-
 </body>
-
 </html>
