@@ -69,7 +69,7 @@
     // LTC variables
     var urlLTCMonthly = "https://apiv2.bitcoinaverage.com/indices/global/history/LTCUSD?period=monthly&?format=json";
     var ulrLTCAlltime = "https://apiv2.bitcoinaverage.com/indices/global/history/LTCUSD?period=alltime&?format=json";
-    var ulrLTCDaily = "https://apiv2.bitcoinaverage.com/indices/global/history/LTCUSD?period=dailye&?format=json";
+    var ulrLTCDaily = "https://apiv2.bitcoinaverage.com/indices/global/history/LTCUSD?period=daily&?format=json";
   
     var avgL = [];
     var schowekL = [];
@@ -220,7 +220,7 @@
               },
               axisY: [
                 {
-                  title: "BTC Value",
+                  title: "Value",
 
                   titleFontSize: 20,
                   logarithmic: true,
@@ -230,31 +230,31 @@
              
                 },
 
-                {
-                  title: "ETH Value",
-                  titleFontColor: "blue",
-                  titleFontSize: 20,
-                  logarithmic: true,
-                  includeZero: false,
-                  suffix: " USD",
-                  labelFontSize: 15,
-                  
-                },
-                {
-                  title: "LTC Value",
-                  titleFontSize: 20,
-                  titleFontColor: "purple",
-                  logarithmic: true,
-                  includeZero: false,
-                  suffix: " USD",
-                  labelFontSize: 15,
-                  
-                }
+       //         {
+          //        title: "ETH Value",
+        //          titleFontColor: "blue",
+        //          titleFontSize: 20,
+        //          logarithmic: true,
+        //          includeZero: false,
+        //          suffix: " USD",
+        //          labelFontSize: 15,
+        //          
+       //         },
+       //         {
+       //           title: "LTC Value",
+       //           titleFontSize: 20,
+        //          titleFontColor: "purple",
+        //          logarithmic: true,
+        //          includeZero: false,
+        //          suffix: " USD",
+        //        labelFontSize: 15,
+        //          
+         //    }
               ],
               data: [{
 
                 name: "BTCUSD",
-                axisYIndex: 0,
+                axisYIndex: 1,
                 showInLegend: true,
                 type: "line",
                 color: "black",
@@ -273,7 +273,7 @@
 
                name: "LTCUSD",
                type: "line",
-               axisYIndex: 2,
+               axisYIndex: 1,
                color: "purple",
                showInLegend: true,
                dataPoints: avgBackL
@@ -802,7 +802,7 @@ axisY: [
     includeZero: false,
     suffix: " USD",
     labelFontSize: 15,
-    viewportMinimum: 110,
+    viewportMinimum: 90,
     viewportMaximum: 250,
   }
 ],
@@ -1079,7 +1079,7 @@ chartContainer1.style.display = "block";
                 includeZero: false,
                 suffix: " USD",
                 labelFontSize: 15,
-                viewportMinimum: 110,
+                viewportMinimum: 90,
                 viewportMaximum: 250,
               }
             ],
